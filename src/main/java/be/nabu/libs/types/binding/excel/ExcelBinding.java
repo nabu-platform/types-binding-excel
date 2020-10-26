@@ -24,6 +24,7 @@ import be.nabu.utils.excel.FileType;
 public class ExcelBinding implements MarshallableBinding {
 
 	private boolean useHeader = true;
+	private boolean allowFormulas = false;
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
@@ -72,7 +73,12 @@ public class ExcelBinding implements MarshallableBinding {
 						if (!(child.getType() instanceof SimpleType)) {
 							continue;
 						}
-						row.add(((ComplexContent) item).get(child.getName()));
+						Object e = ((ComplexContent) item).get(child.getName());
+						if (e instanceof String && !allowFormulas && e.toString().startsWith("=")) {
+							// escape it
+							e = "'" + e;
+						}
+						row.add(e);
 					}
 					rows.add(row);
 				}
