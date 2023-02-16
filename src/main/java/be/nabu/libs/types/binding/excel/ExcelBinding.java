@@ -5,6 +5,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.TimeZone;
 
 import be.nabu.libs.property.api.Value;
 import be.nabu.libs.types.CollectionHandlerFactory;
@@ -25,6 +26,7 @@ public class ExcelBinding implements MarshallableBinding {
 
 	private boolean useHeader = true;
 	private boolean allowFormulas = false;
+	private TimeZone timezone;
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
@@ -82,7 +84,7 @@ public class ExcelBinding implements MarshallableBinding {
 					}
 					rows.add(row);
 				}
-				ExcelUtils.write(output, rows, "export", FileType.XLSX, null);
+				ExcelUtils.write(output, rows, "export", FileType.XLSX, null, timezone);
 			}
 		}
 	}
@@ -95,4 +97,11 @@ public class ExcelBinding implements MarshallableBinding {
 		this.useHeader = useHeader;
 	}
 
+	public TimeZone getTimezone() {
+		return timezone;
+	}
+
+	public void setTimezone(TimeZone timezone) {
+		this.timezone = timezone;
+	}
 }
