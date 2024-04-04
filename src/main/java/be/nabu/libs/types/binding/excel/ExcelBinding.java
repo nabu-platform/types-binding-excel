@@ -19,6 +19,7 @@ import be.nabu.libs.types.api.SimpleType;
 import be.nabu.libs.types.binding.api.MarshallableBinding;
 import be.nabu.libs.types.java.BeanType;
 import be.nabu.libs.types.properties.AliasProperty;
+import be.nabu.libs.types.properties.LabelProperty;
 import be.nabu.utils.excel.ExcelUtils;
 import be.nabu.utils.excel.FileType;
 
@@ -62,7 +63,10 @@ public class ExcelBinding implements MarshallableBinding {
 								if (!(child.getType() instanceof SimpleType)) {
 									continue;
 								}
-								Value<String> property = child.getProperty(AliasProperty.getInstance());
+								Value<String> property = child.getProperty(LabelProperty.getInstance());
+								if (property == null) {
+									property = child.getProperty(AliasProperty.getInstance());
+								}
 								header.add(property == null ? child.getName() : property.getValue());
 							}
 							rows.add(header);
@@ -84,7 +88,11 @@ public class ExcelBinding implements MarshallableBinding {
 					}
 					rows.add(row);
 				}
-				ExcelUtils.write(output, rows, "export", FileType.XLSX, null, timezone);
+				Value<String> property = element.getProperty(LabelProperty.getInstance());
+				if (property == null) {
+					property = element.getProperty(AliasProperty.getInstance());
+				}
+				ExcelUtils.write(output, rows, property == null ? element.getName() : property.getValue(), FileType.XLSX, null, timezone);
 			}
 		}
 	}
