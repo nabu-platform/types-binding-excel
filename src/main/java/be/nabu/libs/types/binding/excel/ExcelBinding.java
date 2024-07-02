@@ -84,6 +84,10 @@ public class ExcelBinding implements MarshallableBinding {
 							// escape it
 							e = "'" + e;
 						}
+//						// if we have a string but it contains only numbers, we want to explicitly escape it
+//						else if (String.class.isAssignableFrom(((SimpleType) child.getType()).getInstanceClass()) && e instanceof String && ((String) e).matches("^[0-9.]+$")) {
+//							e = "'" + e;
+//						}
 						row.add(e);
 					}
 					rows.add(row);
