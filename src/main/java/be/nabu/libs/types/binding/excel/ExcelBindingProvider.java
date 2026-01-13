@@ -49,4 +49,9 @@ public class ExcelBindingProvider implements BindingProvider {
 		return new ExcelBinding();
 	}
 
+	@Override
+	public boolean isText() {
+		return false;
+	}
+	
 }
